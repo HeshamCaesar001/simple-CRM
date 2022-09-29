@@ -1,0 +1,92 @@
+@extends('layouts.app')
+
+@section('title', 'Leads')
+
+@section('pageHeader', 'All Leads')
+
+@section('content')
+
+    <div class="text-right p-3">
+        @if (Auth::user()->role->slug == 'ADM')
+        <a href="{{ route('leads.create') }}" class="btn btn-success">ADD NEW</a>
+        @endif
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Sales</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($leads as $lead)
+        <tr>
+            <td>{{ $lead->id }}</td>
+            <td>{{ $lead->name }}</td>
+            <td>{{ $lead->phone }}</td>
+            <td>{{ $lead->email }}</td>
+            <td>{{ isset($lead->sales->name) ? $lead->sales->name : '' }}</td>
+            <td>
+                <a href="{{ route('leads.show', $lead) }}" class="btn btn-info">Show</a>
+                <button type="button"
+                        lead-id="{{ $lead->id }}"
+                        class="btn btn-primary update-sales"
+                        data-toggle="modal"
+                        data-target="#modal-assigned">
+                    Update Sales Man
+                </button>
+                @if (Auth::user()->role->slug == 'ADM')
+                    {{--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-assigned">--}}
+                        {{--Assigned--}}
+                    {{--</button>--}}
+
+                @endif
+                @if (Auth::user()->role->slug == 'ADM')
+                    <a href="{{ route('leads.edit', $lead) }}" class="btn btn-primary">Edit</a>
+                    <form action="{{ route('leads.destroy', $lead) }}" method="post" style="display: inline-block">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                @endif
+                @if (
+                Auth::user()->role->slug == 'ADM' ||
+                Auth::user()->role->slug == 'TMLD' ||
+                Auth::user()->role->slug == 'SAL'
+                )
+                    <a href="{{ route('calls.create', $lead) }}" class="btn btn-primary">Call</a>
+                @endif
+            </td>
+        </tr>
+        @endforeach
+        </tbody>
+        {{ $leads->links() }}
+    </table>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-assigned" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Assigned Sales Man</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
