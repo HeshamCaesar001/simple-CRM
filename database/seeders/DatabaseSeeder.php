@@ -20,17 +20,17 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        DB::table('roles')->insert([
-            'slug' => "ADM",
-            'title' => "admin",
-        ]);
-        DB::table('roles')->insert([
-            'slug' => "TMLD",
-            'title' => "team leader",
-        ]);
-        DB::table('roles')->insert([
-            'slug' => "SAL",
-            'title' => "sales",
-        ]);
+        // DB::table('roles')->insert([
+        //     'slug' => "ADM",
+        //     'title' => "admin",
+        // ]);
+        // DB::table('roles')->insert([
+        //     'slug' => "TMLD",
+        //     'title' => "team leader",
+        // ]);
+        // DB::table('roles')->insert([
+        //     'slug' => "SAL",
+        //     'title' => "sales",
+        // ]);
     }
 }
